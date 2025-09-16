@@ -389,11 +389,9 @@
                 return;
             }
             
-            // Store in memory
-            window.seedHoursData = {
-                goal: goal,
-                endDate: targetDate.toISOString()
-            };
+            // Store in localStorage
+            localStorage.setItem('seedhours_goal', goal);
+            localStorage.setItem('seedhours_endDate', targetDate.toISOString());
             
             displayCountdown(goal, targetDate);
             showPage('countdown-page');
@@ -436,7 +434,10 @@
 
         function resetGoal() {
             clearInterval(countdownInterval);
-            window.seedHoursData = null;
+            
+            // Clear localStorage
+            localStorage.removeItem('seedhours_goal');
+            localStorage.removeItem('seedhours_endDate');
             
             // Reset form
             document.getElementById('goal-input').value = '';
@@ -452,7 +453,8 @@
             tomorrow.setDate(tomorrow.getDate() + 1);
             document.getElementById('date-input').min = tomorrow.toISOString().split('T')[0];
             
-            showPage('goal-input-page');
+            // Demo: Show end page directly
+            showEndMessage();
         });
 
         // Add enter key support
